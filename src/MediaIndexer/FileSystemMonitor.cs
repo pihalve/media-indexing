@@ -10,13 +10,15 @@ namespace Pihalve.MediaIndexer
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly string[] _watchFilter;
-        private readonly IFileProcessor _processor;
+        private readonly IMediaItemFactory _mediaItemFactory;
+        private readonly IMediaItemIndexService _indexService;
         private readonly FileSystemWatcher _watcher;
 
-        public FileSystemMonitor(string watchFolder, string watchFilter, IFileProcessor processor)
+        public FileSystemMonitor(string watchFolder, string watchFilter, IMediaItemFactory mediaItemFactory, IMediaItemIndexService indexService)
         {
             _watchFilter = watchFilter.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.TrimStart('*')).ToArray();
-            _processor = processor;
+            _mediaItemFactory = mediaItemFactory;
+            _indexService = indexService;
 
             _watcher = new FileSystemWatcher(watchFolder);
             _watcher.IncludeSubdirectories = true;
@@ -38,9 +40,10 @@ namespace Pihalve.MediaIndexer
             {
                 try
                 {
-                    if (Log.IsDebugEnabled) Log.Debug(string.Format("Processing created file: {0}", e.FullPath));
+                    if (Log.IsDebugEnabled) Log.DebugFormat("Processing created file: {0}", e.FullPath);
 
-                    //TODO: handle created media file
+                    var mediaItem = _mediaItemFactory.Create(e.FullPath);
+                    _indexService.Save(mediaItem);
                 }
                 catch (Exception ex)
                 {
@@ -54,7 +57,7 @@ namespace Pihalve.MediaIndexer
                 {
                     try
                     {
-                        if (Log.IsDebugEnabled) Log.Debug(string.Format("Processing created directory: {0}", e.FullPath));
+                        if (Log.IsDebugEnabled) Log.DebugFormat("Processing created directory: {0}", e.FullPath);
 
                         //TODO: handle created directory - the whole hierarchy since only event for root of new hierarchy is triggered
                     }
@@ -72,9 +75,21 @@ namespace Pihalve.MediaIndexer
             {
                 try
                 {
-                    if (Log.IsDebugEnabled) Log.Debug(string.Format("Processing changed file: {0}", e.FullPath));
+                    if (Log.IsDebugEnabled) Log.DebugFormat("Processing changed file: {0}", e.FullPath);
 
                     //TODO: handle changed media file
+                    var mediaItem = _mediaItemFactory.Create(e.FullPath);
+                    var existingMediaItem = _indexService.Query(e.FullPath).FirstOrDefault();
+                    if (existingMediaItem != null)
+                    {
+                        mediaItem.ChangeIdentity(existingMediaItem.docid);
+                    }
+                    else
+                    {
+                        Log.WarnFormat("Expected to find file in index, but it wasn't there. Adding file: {0}", e.FullPath);
+                    }
+
+                    _indexService.Save(mediaItem);
                 }
                 catch (Exception ex)
                 {
@@ -88,7 +103,7 @@ namespace Pihalve.MediaIndexer
                 {
                     try
                     {
-                        if (Log.IsDebugEnabled) Log.Debug(string.Format("Processing changed directory: {0}", e.FullPath));
+                        if (Log.IsDebugEnabled) Log.DebugFormat("Processing changed directory: {0}", e.FullPath);
 
                         //TODO: handle changed directory
                     }

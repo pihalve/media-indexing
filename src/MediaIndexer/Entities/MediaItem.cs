@@ -29,5 +29,10 @@ namespace Pihalve.MediaIndexer.Entities
                 return _keywords;
             }
         }
+
+        public void ChangeIdentity(Guid id)
+        {
+            Id = id;
+        }
     }
 }

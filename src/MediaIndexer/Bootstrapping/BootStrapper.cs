@@ -31,10 +31,10 @@ namespace Pihalve.MediaIndexer.Bootstrapping
             _raptorDb = new RaptorDBClient("localhost", indexServerPort, "admin", "admin");
 
             builder.RegisterInstance(_raptorDb).As<IRaptorDB>().ExternallyOwned();
-            builder.RegisterType<RaptorIndexer>().As<IIndexer>().InstancePerLifetimeScope();
+            builder.RegisterType<RaptorMediaItemIndexService>().As<IMediaItemIndexService>().InstancePerLifetimeScope();
             builder.RegisterType<ExifTagReader>().As<IExifTagReader>().InstancePerLifetimeScope();
             builder.RegisterType<IptcTagReader>().As<IIptcTagReader>().InstancePerLifetimeScope();
-            builder.RegisterType<FileProcessor>().As<IFileProcessor>().InstancePerLifetimeScope();
+            builder.RegisterType<MediaItemFactory>().As<IMediaItemFactory>().InstancePerLifetimeScope();
             builder.RegisterType<FileSystemMonitor>().As<IFileSystemMonitor>()
                 .WithParameters(new []
                     {

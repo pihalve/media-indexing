@@ -65,16 +65,16 @@
   <ItemGroup>
     <Compile Include="Bootstrapping\BootStrapper.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="FileProcessor.cs" />
+    <Compile Include="MediaItemFactory.cs" />
     <Compile Include="FileSystemMonitor.cs" />
-    <Compile Include="IFileProcessor.cs" />
+    <Compile Include="IMediaItemFactory.cs" />
     <Compile Include="IFileSystemMonitor.cs" />
-    <Compile Include="IIndexer.cs" />
+    <Compile Include="IMediaItemIndexService.cs" />
     <Compile Include="MetaData\ExifReaderExtensions.cs" />
     <Compile Include="MetaData\ExifTagReader.cs" />
     <Compile Include="MetaData\IExifTagReader.cs" />
     <Compile Include="MetaData\IIptcTagReader.cs" />
-    <Compile Include="RaptorIndexer.cs" />
+    <Compile Include="RaptorMediaItemIndexService.cs" />
     <Compile Include="MetaData\IptcTagReader.cs" />
     <Compile Include="MediaIndexingService.cs" />
     <Compile Include="Entities\MediaItem.cs" />

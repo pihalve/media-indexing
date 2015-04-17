@@ -6,26 +6,18 @@ using Pihalve.MediaIndexer.MetaData;
 
 namespace Pihalve.MediaIndexer
 {
-    public class FileProcessor : IFileProcessor
+    public class MediaItemFactory : IMediaItemFactory
     {
-        private readonly IIndexer _indexer;
         private readonly IExifTagReader _exifReader;
         private readonly IIptcTagReader _iptcReader;
 
-        public FileProcessor(IIndexer indexer, IExifTagReader exifReader, IIptcTagReader iptcReader)
+        public MediaItemFactory(IExifTagReader exifReader, IIptcTagReader iptcReader)
         {
-            _indexer = indexer;
             _exifReader = exifReader;
             _iptcReader = iptcReader;
         }
 
-        public void Process(string filePath)
-        {
-            var item = CreateMediaItem(filePath);
-            _indexer.Save(item);
-        }
-
-        private MediaItem CreateMediaItem(string filePath)
+        public MediaItem Create(string filePath)
         {
             var mediaFile = new FileInfo(filePath);
             if (!mediaFile.Exists)

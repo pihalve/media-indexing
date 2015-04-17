@@ -2,8 +2,8 @@
 
 namespace Pihalve.MediaIndexer
 {
-    public interface IIndexer
+    public interface IMediaItemFactory
     {
-        void Save(MediaItem item);
+        MediaItem Create(string filePath);
     }
 }
