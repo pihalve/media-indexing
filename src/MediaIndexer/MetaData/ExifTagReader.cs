@@ -3,7 +3,7 @@ using ExifLib;
 
 namespace Pihalve.MediaIndexer.MetaData
 {
-    public class ExifTagReader : IExifTagReader
+    public class ExifTagReader : IExifTagReader, IDisposable
     {
         private ExifReader _exifReader;
 
@@ -21,36 +21,30 @@ namespace Pihalve.MediaIndexer.MetaData
             }
         }
 
-        public DateTime? GetDateTimeOriginal(string filePath)
+        public T GetTagValue<T>(ExifTags exifTag)
         {
-            ExifReader reader = null;
-            DateTime? dateTimeOriginal;
-
-            try
+            if (_exifReader == null)
             {
-                reader = _exifReader ?? new ExifReader(filePath);
-                dateTimeOriginal = GetDateTime(reader, ExifTags.DateTimeOriginal);
-            }
-            finally
-            {
-                if (_exifReader == null && reader != null)
-                {
-                    reader.Dispose();
-                }
+                throw new Exception("BeginRead must be called first");
             }
 
-            return dateTimeOriginal;
+            return _exifReader.GetTagValue<T>(exifTag);
         }
 
-        private static DateTime? GetDateTime(ExifReader exifReader, ExifTags tag)
+        public T GetTagValue<T>(string filePath, ExifTags exifTag)
         {
-            DateTime dateTimeOriginal;
-            if (exifReader.GetTagValue(ExifTags.DateTimeOriginal, out dateTimeOriginal))
+            using (var exifReader = new ExifReader(filePath))
             {
-                return dateTimeOriginal;
+                return exifReader.GetTagValue<T>(exifTag);
             }
+        }
 
-            return null;
+        public void Dispose()
+        {
+            if (_exifReader != null)
+            {
+                _exifReader.Dispose();
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using ExifLib;
 using Pihalve.MediaIndexer.Entities;
 using Pihalve.MediaIndexer.MetaData;
 
@@ -36,7 +38,7 @@ namespace Pihalve.MediaIndexer
 
             if (mediaFile.Extension.Equals(".jpg"))
             {
-                item.DateTimeOriginal = _exifReader.GetDateTimeOriginal(filePath);
+                item.DateTimeOriginal = _exifReader.GetTagValue<DateTime>(filePath, ExifTags.DateTimeOriginal);
                 var keywords = _iptcReader.GetKeywords(filePath);
                 foreach (var keyword in keywords)
                 {

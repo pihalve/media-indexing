@@ -70,6 +70,7 @@
     <Compile Include="IFileProcessor.cs" />
     <Compile Include="IFileSystemMonitor.cs" />
     <Compile Include="IIndexer.cs" />
+    <Compile Include="MetaData\ExifReaderExtensions.cs" />
     <Compile Include="MetaData\ExifTagReader.cs" />
     <Compile Include="MetaData\IExifTagReader.cs" />
     <Compile Include="MetaData\IIptcTagReader.cs" />
