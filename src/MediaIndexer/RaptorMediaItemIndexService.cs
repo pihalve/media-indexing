@@ -33,7 +33,8 @@ namespace Pihalve.MediaIndexer
 
         public IEnumerable<MediaItemViewRowSchema> Query(string filePath)
         {
-            return _raptorDb.Query<MediaItemViewRowSchema>(x => x.FilePath.Equals(filePath)).Rows;
+            var result = _raptorDb.Query<MediaItemViewRowSchema>(x => x != null && x.FilePath == filePath);
+            return result != null ? result.Rows : Enumerable.Empty<MediaItemViewRowSchema>();
         }
 
         public MediaItem Find(string filePath)

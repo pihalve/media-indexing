@@ -15,6 +15,7 @@ namespace Pihalve.MediaIndexer.Views
         {
             Name = "MediaItem";
             Description = "A primary view for MediaItems";
+            ConsistentSaveToThisView = true;
             isPrimaryList = true;
             isActive = true;
             BackgroundIndexing = true;

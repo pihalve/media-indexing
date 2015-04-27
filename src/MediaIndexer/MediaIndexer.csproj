@@ -63,7 +63,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bootstrapping\BootModule.cs" />
     <Compile Include="Bootstrapping\BootStrapper.cs" />
+    <Compile Include="Bootstrapping\Modules\AppModule.cs" />
+    <Compile Include="Bootstrapping\Modules\RaptorDbModule.cs" />
+    <Compile Include="Bootstrapping\RegistrationExtensions.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="MediaItemFactory.cs" />
     <Compile Include="FileSystemMonitor.cs" />
