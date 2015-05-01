@@ -21,6 +21,7 @@ namespace Pihalve.MediaIndexer.Bootstrapping.Modules
                         new NamedParameter("watchFilter", watchFilter)
                     })
                 .InstancePerLifetimeScope();
+            builder.RegisterType<MediaIndexingService>().InstancePerLifetimeScope();
         }
     }
 }

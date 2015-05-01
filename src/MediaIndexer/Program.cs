@@ -1,4 +1,7 @@
-﻿using Topshelf;
+﻿using Autofac;
+using Pihalve.MediaIndexer.Bootstrapping;
+using Topshelf;
+using Topshelf.Autofac;
 using Topshelf.HostConfigurators;
 
 namespace Pihalve.MediaIndexer
@@ -9,14 +12,19 @@ namespace Pihalve.MediaIndexer
         {
             log4net.Config.XmlConfigurator.Configure();
 
-            HostFactory.Run(InitService);
+            var bootstrapper = new BootStrapper();
+            var container = bootstrapper.Boot();
+
+            HostFactory.Run(config => InitService(config, container));
         }
 
-        private static void InitService(HostConfigurator config)
+        private static void InitService(HostConfigurator config, ILifetimeScope container)
         {
+            config.UseAutofacContainer(container);
+
             config.Service<MediaIndexingService>(sc =>
             {
-                sc.ConstructUsing(() => new MediaIndexingService());
+                sc.ConstructUsingAutofacContainer();
                 sc.WhenStarted(s => s.Start());
                 sc.WhenStopped(s => s.Stop());
             });

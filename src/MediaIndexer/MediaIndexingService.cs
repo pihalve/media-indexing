@@ -1,38 +1,29 @@
-﻿using Autofac;
-using log4net;
-using Pihalve.MediaIndexer.Bootstrapping;
+﻿using log4net;
 
 namespace Pihalve.MediaIndexer
 {
     public class MediaIndexingService
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private BootStrapper _bootstrapper;
-        private ILifetimeScope _scope;
+        private readonly IFileSystemMonitor _fileSystemMonitor;
+
+        public MediaIndexingService(IFileSystemMonitor fileSystemMonitor)
+        {
+            _fileSystemMonitor = fileSystemMonitor;
+        }
 
         public void Start()
         {
-            Log.Info("MediaIndexingService start");
+            _fileSystemMonitor.Start();
 
-            _bootstrapper = new BootStrapper();
-            var container = _bootstrapper.Boot();
-            _scope = container.BeginLifetimeScope();
-            _scope.Resolve<IFileSystemMonitor>().Start();
+            Log.Info("MediaIndexingService started");
         }
 
         public void Stop()
         {
-            if (_scope != null)
-            {
-                _scope.Dispose();
-            }
+            _fileSystemMonitor.Stop();
 
-            if (_bootstrapper != null)
-            {
-                _bootstrapper.Dispose();
-            }
-
-            Log.Info("MediaIndexingService stop");
+            Log.Info("MediaIndexingService stopped");
         }
     }
 }

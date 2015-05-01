@@ -34,6 +34,11 @@ namespace Pihalve.MediaIndexer
             _watcher.EnableRaisingEvents = true;
         }
 
+        public void Stop()
+        {
+            _watcher.EnableRaisingEvents = false;
+        }
+
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
             if (_watchFilter.Contains(Path.GetExtension(e.Name)))
