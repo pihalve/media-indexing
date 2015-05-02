@@ -1,5 +1,7 @@
 ﻿using Autofac;
+using log4net.Config;
 using Pihalve.MediaIndexer.Bootstrapping;
+using Pihalve.MediaIndexer.Bootstrapping.WebApi;
 using Topshelf;
 using Topshelf.Autofac;
 using Topshelf.HostConfigurators;
@@ -10,7 +12,7 @@ namespace Pihalve.MediaIndexer
     {
         static void Main(string[] args)
         {
-            log4net.Config.XmlConfigurator.Configure();
+            XmlConfigurator.Configure();
 
             var bootstrapper = new BootStrapper();
             var container = bootstrapper.Boot();
@@ -27,6 +29,11 @@ namespace Pihalve.MediaIndexer
                 sc.ConstructUsingAutofacContainer();
                 sc.WhenStarted(s => s.Start());
                 sc.WhenStopped(s => s.Stop());
+
+                sc.WebApiEndpoint(api => api
+                    .OnLocalhost() // defaults to port 8080
+                    //.ConfigureRoutes(RouteConfig.Configure)
+                    .UseDependencyResolver(new AutofacWebApiDependencyResolver(container)));
             });
 
             config.RunAsLocalSystem();
