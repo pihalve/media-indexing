@@ -1,5 +1,4 @@
-﻿using System.Web.Http.Controllers;
-using Autofac;
+﻿using Autofac;
 using Pihalve.MediaIndexer.ServiceApi;
 
 namespace Pihalve.MediaIndexer.Bootstrapping.Modules
@@ -8,7 +7,7 @@ namespace Pihalve.MediaIndexer.Bootstrapping.Modules
     {
         protected override void Register(ContainerBuilder builder)
         {
-            builder.RegisterType<AdminController>().As<IHttpController>().InstancePerLifetimeScope();
+            builder.RegisterType<AdminController>().InstancePerLifetimeScope();
         }
     }
 }
