@@ -1,14 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using log4net;
 
 namespace Pihalve.MediaIndexer
 {
     public class FileSystemMonitor : IFileSystemMonitor, IDisposable
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly string[] _watchFilter;
         private readonly IMediaItemFactory _mediaItemFactory;
         private readonly IMediaItemIndexService _indexService;

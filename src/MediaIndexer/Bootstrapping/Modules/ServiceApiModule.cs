@@ -7,7 +7,7 @@ namespace Pihalve.MediaIndexer.Bootstrapping.Modules
     {
         protected override void Register(ContainerBuilder builder)
         {
-            builder.RegisterType<AdminController>().InstancePerLifetimeScope();
+            builder.RegisterType<MediaIndexerController>().InstancePerLifetimeScope();
         }
     }
 }

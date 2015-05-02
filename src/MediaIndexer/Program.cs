@@ -15,10 +15,12 @@ namespace Pihalve.MediaIndexer
         {
             XmlConfigurator.Configure();
 
-            var bootstrapper = new BootStrapper();
-            var container = bootstrapper.Boot();
+            using (var bootstrapper = new BootStrapper())
+            {
+                var container = bootstrapper.Boot();
 
-            HostFactory.Run(config => InitService(config, container));
+                HostFactory.Run(config => InitService(config, container));
+            }
         }
 
         private static void InitService(HostConfigurator config, ILifetimeScope container)

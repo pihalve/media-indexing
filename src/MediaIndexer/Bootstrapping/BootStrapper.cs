@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Collections.Generic;
+using Autofac;
 using Autofac.Util;
 
 namespace Pihalve.MediaIndexer.Bootstrapping
@@ -15,7 +16,17 @@ namespace Pihalve.MediaIndexer.Bootstrapping
 
             _rootContainer = builder.Build();
 
+            ConfigureModules();
+
             return _rootContainer;
+        }
+
+        private void ConfigureModules()
+        {
+            foreach (var module in _rootContainer.Resolve<IEnumerable<BootModule>>())
+            {
+                module.Configure(_rootContainer);
+            }
         }
 
         protected override void Dispose(bool disposing)

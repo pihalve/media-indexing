@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Media.Imaging;
 
 namespace Pihalve.MediaIndexer.MetaData
@@ -13,7 +14,11 @@ namespace Pihalve.MediaIndexer.MetaData
                 //var image = System.Drawing.Image.FromStream(stream, false, false);
                 var decoder = new JpegBitmapDecoder(stream, BitmapCreateOptions.None, BitmapCacheOption.None);
                 var metadata = decoder.Frames[0].Metadata as BitmapMetadata;
-                return metadata != null ? metadata.Keywords : null;
+                if (metadata != null && metadata.Keywords != null)
+                {
+                    return metadata.Keywords;
+                }
+                return Enumerable.Empty<string>();
             }
         }
     }

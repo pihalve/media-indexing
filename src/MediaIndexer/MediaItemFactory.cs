@@ -1,6 +1,5 @@
-﻿using System;
-using System.IO;
-using ExifLib;
+﻿using System.IO;
+using System.Linq;
 using Pihalve.MediaIndexer.Entities;
 using Pihalve.MediaIndexer.MetaData;
 
@@ -8,6 +7,7 @@ namespace Pihalve.MediaIndexer
 {
     public class MediaItemFactory : IMediaItemFactory
     {
+        private static readonly string[] JpgExtensions = {".jpg", ".jpeg"};
         private readonly IExifTagReader _exifReader;
         private readonly IIptcTagReader _iptcReader;
 
@@ -25,12 +25,16 @@ namespace Pihalve.MediaIndexer
                 return null;
             }
 
-            var item = new MediaItem(filePath);
-            item.Created = mediaFile.CreationTime;
-
-            if (mediaFile.Extension.Equals(".jpg"))
+            var item = new MediaItem
             {
-                item.DateTimeOriginal = _exifReader.GetTagValue<DateTime>(filePath, ExifTags.DateTimeOriginal);
+                FilePath = filePath,
+                Created = mediaFile.CreationTime
+            };
+
+            if (JpgExtensions.Contains(mediaFile.Extension.ToLower()))
+            {
+                item.DateTimeOriginal = _exifReader.GetDateTimeOriginal(filePath);
+
                 var keywords = _iptcReader.GetKeywords(filePath);
                 foreach (var keyword in keywords)
                 {

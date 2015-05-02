@@ -7,9 +7,22 @@ namespace Pihalve.MediaIndexer.MetaData
     {
         private ExifReader _exifReader;
 
-        public void BeginRead(string filePath)
+        public bool BeginRead(string filePath)
         {
-            _exifReader = new ExifReader(filePath);
+            if (_exifReader != null)
+            {
+                throw new Exception("Existing read is in progress. Please call EndRead first.");
+            }
+
+            try
+            {
+                _exifReader = new ExifReader(filePath);
+                return true;
+            }
+            catch (ExifLibException)
+            {
+                return false;
+            }
         }
 
         public void EndRead()
@@ -21,22 +34,41 @@ namespace Pihalve.MediaIndexer.MetaData
             }
         }
 
-        public T GetTagValue<T>(ExifTags exifTag)
+        public DateTime? GetDateTimeOriginal()
         {
             if (_exifReader == null)
             {
                 throw new Exception("BeginRead must be called first");
             }
 
-            return _exifReader.GetTagValue<T>(exifTag);
+            DateTime result;
+            if (_exifReader.GetTagValue(ExifTags.DateTimeOriginal, out result))
+            {
+                return result;
+            }
+
+            return null;
         }
 
-        public T GetTagValue<T>(string filePath, ExifTags exifTag)
+        public DateTime? GetDateTimeOriginal(string filePath)
         {
-            using (var exifReader = new ExifReader(filePath))
+            try
             {
-                return exifReader.GetTagValue<T>(exifTag);
+                using (var exifReader = new ExifReader(filePath))
+                {
+                    DateTime result;
+                    if (exifReader.GetTagValue(ExifTags.DateTimeOriginal, out result))
+                    {
+                        return result;
+                    }
+                }
             }
+            catch (ExifLibException)
+            {
+                // unable to get exif tag - eat exception so we that can return null
+            }
+
+            return null;
         }
 
         public void Dispose()

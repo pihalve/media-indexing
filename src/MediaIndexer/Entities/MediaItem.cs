@@ -5,18 +5,11 @@ namespace Pihalve.MediaIndexer.Entities
 {
     public class MediaItem
     {
-        private readonly IList<string> _keywords;
+        private readonly IList<string> _keywords = new List<string>();
 
-        public MediaItem(string filePath)
-        {
-            Id = Guid.NewGuid();
-            FilePath = filePath;
-            _keywords = new List<string>();
-        }
+        public Guid Id { get; set; }
 
-        public Guid Id { get; private set; }
-
-        public string FilePath { get; private set; }
+        public string FilePath { get; set; }
         
         public DateTime Created { get; set; }
         
@@ -28,11 +21,6 @@ namespace Pihalve.MediaIndexer.Entities
             {
                 return _keywords;
             }
-        }
-
-        public void ChangeIdentity(Guid id)
-        {
-            Id = id;
         }
     }
 }
