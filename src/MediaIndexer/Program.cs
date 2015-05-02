@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Web.Http;
+using Autofac;
 using log4net.Config;
 using Pihalve.MediaIndexer.Bootstrapping;
 using Pihalve.MediaIndexer.Bootstrapping.WebApi;
@@ -32,7 +33,7 @@ namespace Pihalve.MediaIndexer
 
                 sc.WebApiEndpoint(api => api
                     .OnLocalhost() // defaults to port 8080
-                    //.ConfigureRoutes(RouteConfig.Configure)
+                    .ConfigureServer(c => c.MapHttpAttributeRoutes())
                     .UseDependencyResolver(new AutofacWebApiDependencyResolver(container)));
             });
 

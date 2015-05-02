@@ -80,10 +80,6 @@ namespace Pihalve.MediaIndexer.Bootstrapping.WebApi
             {
                 RouteConfigurer(configuration.Routes);
             }
-            else
-            {
-                configuration.MapHttpAttributeRoutes();
-            }
             Server = new HttpSelfHostServer(configuration);
             Log.Info(string.Format("WebAPI Selfhost server configured and listening on: {0}", uri));
             return Server;
