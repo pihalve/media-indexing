@@ -93,7 +93,6 @@
     <Compile Include="Bootstrapping\Modules\AppModule.cs" />
     <Compile Include="Bootstrapping\Modules\RaptorDbModule.cs" />
     <Compile Include="Bootstrapping\RegistrationExtensions.cs" />
-    <Compile Include="Bootstrapping\WebApi\RouteConfig.cs" />
     <Compile Include="Bootstrapping\WebApi\WebApiConfigurator.cs" />
     <Compile Include="Bootstrapping\WebApi\WebApiServiceConfiguratorExtensions.cs" />
     <Compile Include="Configuration.cs" />
