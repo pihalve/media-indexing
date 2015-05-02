@@ -87,7 +87,7 @@ namespace Pihalve.MediaIndexer
                     var existingMediaItem = _indexService.Query(e.FullPath).FirstOrDefault();
                     if (existingMediaItem != null)
                     {
-                        mediaItem.ChangeIdentity(existingMediaItem.docid);
+                        //mediaItem.ChangeIdentity(existingMediaItem.docid);
                     }
                     else
                     {

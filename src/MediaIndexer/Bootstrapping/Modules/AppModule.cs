@@ -10,7 +10,7 @@ namespace Pihalve.MediaIndexer.Bootstrapping.Modules
             var watchFolder = Configuration.GetAppSetting<string>("WatchFolder");
             var watchFilter = Configuration.GetAppSetting<string>("WatchFilter");
 
-            builder.RegisterType<RaptorMediaItemIndexService>().As<IMediaItemIndexService>().InstancePerLifetimeScope();
+            //builder.RegisterType<RaptorMediaItemIndexService>().As<IMediaItemIndexService>().InstancePerLifetimeScope();
             builder.RegisterType<ExifTagReader>().As<IExifTagReader>().InstancePerLifetimeScope();
             builder.RegisterType<IptcTagReader>().As<IIptcTagReader>().InstancePerLifetimeScope();
             builder.RegisterType<MediaItemFactory>().As<IMediaItemFactory>().InstancePerLifetimeScope();

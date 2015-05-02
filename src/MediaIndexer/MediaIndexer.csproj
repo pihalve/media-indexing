@@ -91,7 +91,6 @@
     <Compile Include="Bootstrapping\BootModule.cs" />
     <Compile Include="Bootstrapping\BootStrapper.cs" />
     <Compile Include="Bootstrapping\Modules\AppModule.cs" />
-    <Compile Include="Bootstrapping\Modules\RaptorDbModule.cs" />
     <Compile Include="Bootstrapping\RegistrationExtensions.cs" />
     <Compile Include="Bootstrapping\WebApi\WebApiConfigurator.cs" />
     <Compile Include="Bootstrapping\WebApi\WebApiServiceConfiguratorExtensions.cs" />
@@ -105,14 +104,12 @@
     <Compile Include="MetaData\ExifTagReader.cs" />
     <Compile Include="MetaData\IExifTagReader.cs" />
     <Compile Include="MetaData\IIptcTagReader.cs" />
-    <Compile Include="RaptorMediaItemIndexService.cs" />
     <Compile Include="MetaData\IptcTagReader.cs" />
     <Compile Include="MediaIndexingService.cs" />
     <Compile Include="Entities\MediaItem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceApi\AdminController.cs" />
-    <Compile Include="Views\MediaItemView.cs" />
     <Compile Include="Watchers\DirectoryWatcher.cs" />
     <Compile Include="Watchers\FileWatcher.cs" />
     <Compile Include="Watchers\IWatcher.cs" />
