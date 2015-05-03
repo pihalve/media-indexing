@@ -1,8 +1,9 @@
 ﻿using System.Web.Http;
 using Autofac;
 using log4net.Config;
-using Pihalve.MediaIndexer.Bootstrapping;
-using Pihalve.MediaIndexer.Bootstrapping.WebApi;
+using Pihalve.MediaIndexer.Infrastructure.Bootstrapping;
+using Pihalve.MediaIndexer.Infrastructure.Bootstrapping.WebApi;
+using Pihalve.MediaIndexer.Interfaces.Service;
 using Topshelf;
 using Topshelf.Autofac;
 using Topshelf.HostConfigurators;
