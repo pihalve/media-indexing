@@ -6,7 +6,7 @@ using Raven.Client.Document;
 
 namespace Pihalve.MediaIndexer.Raven
 {
-    public class MediaItemImporter : IMediaItemImporter
+    public class RavenMediaItemImporter : IMediaItemImporter
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly IDocumentStore _store;
@@ -14,7 +14,7 @@ namespace Pihalve.MediaIndexer.Raven
         private readonly string _watchFolder;
         private readonly string[] _watchExtensions;
 
-        public MediaItemImporter(IDocumentStore store, IMediaItemFactory mediaItemFactory, string watchFolder, string watchFilter)
+        public RavenMediaItemImporter(IDocumentStore store, IMediaItemFactory mediaItemFactory, string watchFolder, string watchFilter)
         {
             _store = store;
             _mediaItemFactory = mediaItemFactory;

@@ -1,27 +1,23 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 using log4net;
-using Pihalve.MediaIndexer.Entities;
-using Pihalve.MediaIndexer.Raven.Indexes;
-using Raven.Client;
-using Raven.Client.Linq;
 
 namespace Pihalve.MediaIndexer.ServiceApi
 {
     public class MediaIndexerController : ApiController
     {
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly IMediaItemImporter _importer;
-        private readonly IDocumentStore _store;
+        private readonly IMediaItemRepository _repository;
 
-        public MediaIndexerController(IMediaItemImporter importer, IDocumentStore store)
+        public MediaIndexerController(IMediaItemImporter importer, IMediaItemRepository repository)
         {
             _importer = importer;
-            _store = store;
+            _repository = repository;
         }
 
         [Route("mediaindexer/query")]
@@ -30,27 +26,13 @@ namespace Pihalve.MediaIndexer.ServiceApi
         {
             try
             {
-                using (var session = _store.OpenSession())
-                {
-                    RavenQueryStatistics stats;
-                    var results = session
-                        .Query<MediaItem, MediaItems_ByKeywords>()
-                        .Statistics(out stats)
-                        .Where(x => x.Keywords.ContainsAll(tag))
-                        .ToArray();
+                var results = _repository.QueryByTags(tag);
 
-                    if (Log.IsDebugEnabled)
-                    {
-                        Log.DebugFormat("QueryByTags '{0}' returned {1} results",
-                            tag != null ? tag.Aggregate((i, j) => i + "," + j) : "",
-                            stats.TotalResults);
-                    }
-
-                    return Request.CreateResponse(HttpStatusCode.OK, results);
-                }
+                return Request.CreateResponse(HttpStatusCode.OK, results);
             }
             catch (Exception ex)
             {
+                Log.Error("QueryByTags failed", ex);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
             }
         }
@@ -67,6 +49,7 @@ namespace Pihalve.MediaIndexer.ServiceApi
             }
             catch (Exception ex)
             {
+                Log.Error("Import failed", ex);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
             }
         }

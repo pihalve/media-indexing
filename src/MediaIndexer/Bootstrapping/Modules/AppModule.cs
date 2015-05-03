@@ -14,6 +14,14 @@ namespace Pihalve.MediaIndexer.Bootstrapping.Modules
             builder.RegisterType<ExifTagReader>().As<IExifTagReader>().InstancePerLifetimeScope();
             builder.RegisterType<IptcTagReader>().As<IIptcTagReader>().InstancePerLifetimeScope();
             builder.RegisterType<MediaItemFactory>().As<IMediaItemFactory>().InstancePerLifetimeScope();
+            builder.RegisterType<RavenMediaItemRepository>().As<IMediaItemRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<RavenMediaItemImporter>().As<IMediaItemImporter>()
+                .WithParameters(new[]
+                    {
+                        new NamedParameter("watchFolder", watchFolder), 
+                        new NamedParameter("watchFilter", watchFilter)
+                    })
+                .InstancePerLifetimeScope();
             //builder.RegisterType<FileSystemMonitor>().As<IFileSystemMonitor>()
             //    .WithParameters(new[]
             //        {
@@ -22,13 +30,6 @@ namespace Pihalve.MediaIndexer.Bootstrapping.Modules
             //        })
             //    .InstancePerLifetimeScope();
             builder.RegisterType<DummyFileSystemMonitor>().As<IFileSystemMonitor>().InstancePerLifetimeScope();
-            builder.RegisterType<MediaItemImporter>().As<IMediaItemImporter>()
-                .WithParameters(new[]
-                    {
-                        new NamedParameter("watchFolder", watchFolder), 
-                        new NamedParameter("watchFilter", watchFilter)
-                    })
-                .InstancePerLifetimeScope();
             builder.RegisterType<MediaIndexingService>().InstancePerLifetimeScope();
         }
     }
