@@ -23,14 +23,17 @@ namespace Pihalve.MediaIndexer.Infrastructure.Raven
             _store = store;
             _mediaItemFactory = mediaItemFactory;
             _watchFolder = watchFolder;
-            //_watchFolder = @"D:\Media";
             _watchExtensions = watchFilter.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
         }
 
         public void Import()
         {
+            Log.Info("Import started...");
+
             _store.ClearCollection("MediaItems");
 
+            int succeeded = 0;
+            int failed = 0;
             using (BulkInsertOperation bulkInsert = _store.BulkInsert())
             {
                 var files = DirectoryEx.EnumerateFiles(_watchFolder, _watchExtensions, SearchOption.AllDirectories);
@@ -42,16 +45,20 @@ namespace Pihalve.MediaIndexer.Infrastructure.Raven
                         if (mediaItem != null)
                         {
                             bulkInsert.Store(mediaItem);
+                            succeeded++;
                             
                             if (Log.IsDebugEnabled) Log.DebugFormat("File indexed: {0}", file);
                         }
                     }
                     catch (Exception ex)
                     {
+                        failed++;
                         Log.ErrorFormat("Failed indexing file: {0}. {1}", file, ex.Message);
                     }
                 }
             }
+
+            Log.InfoFormat("Import finished. Succeeded: {0}. Failed: {1}", succeeded, failed);
         }
     }
 }
