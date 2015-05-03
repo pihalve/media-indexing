@@ -8,8 +8,11 @@ namespace Pihalve.MediaIndexer.Raven.Indexes
     {
         public MediaItems_ByKeywords()
         {
-            //Map = mediaItems => mediaItems
-            //    .Select(mediaItem => mediaItem.)
+            Map = mediaItems => mediaItems
+                .Select(mediaItem => new
+                {
+                    mediaItem.Keywords
+                });
         }
     }
 }

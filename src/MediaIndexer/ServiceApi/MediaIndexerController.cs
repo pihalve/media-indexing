@@ -7,9 +7,9 @@ namespace Pihalve.MediaIndexer.ServiceApi
 {
     public class MediaIndexerController : ApiController
     {
-        private readonly IBulkIndexer _bulkIndexer;
+        private readonly IMediaItemImporter _bulkIndexer;
 
-        public MediaIndexerController(IBulkIndexer bulkIndexer)
+        public MediaIndexerController(IMediaItemImporter bulkIndexer)
         {
             _bulkIndexer = bulkIndexer;
         }
@@ -20,13 +20,13 @@ namespace Pihalve.MediaIndexer.ServiceApi
             return "Hello world!";
         }
 
-        [Route("mediaindexer/reindexall")]
+        [Route("mediaindexer/import")]
         [HttpGet]
-        public HttpResponseMessage ReindexAll()
+        public HttpResponseMessage Import()
         {
             try
             {
-                _bulkIndexer.ReindexAll();
+                _bulkIndexer.Import();
             }
             catch (Exception ex)
             {

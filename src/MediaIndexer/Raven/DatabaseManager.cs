@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Pihalve.MediaIndexer.Entities;
 using Raven.Abstractions.Data;
-using Raven.Client;
 using Raven.Client.Embedded;
 
-namespace Pihalve.MediaIndexer.Raven.Configuration
+namespace Pihalve.MediaIndexer.Raven
 {
     public static class DatabaseManager
     {
@@ -32,8 +29,7 @@ namespace Pihalve.MediaIndexer.Raven.Configuration
                 store.DataDirectory = Path.Combine(dataDirectory, SystemDatabaseName);
                 store.Initialize();
 
-                var dbNames = store.DatabaseCommands.GlobalAdmin.GetDatabaseNames(10);
-                if (!dbNames.Contains(MediaIndexerDatabaseName))
+                if (!store.DatabaseExists(MediaIndexerDatabaseName))
                 {
                     store.DatabaseCommands.GlobalAdmin.CreateDatabase(new DatabaseDocument
                     {
@@ -44,17 +40,6 @@ namespace Pihalve.MediaIndexer.Raven.Configuration
                         }
                     });
                 }
-            }
-        }
-
-        public static void ClearCollection(IDocumentStore store, string collectionName)
-        {
-            using (var session = store.OpenSession())
-            {
-                session.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(
-                    "Raven/DocumentsByEntityName",
-                    new IndexQuery { Query = "Tag:" + collectionName },
-                    new BulkOperationOptions { AllowStale = true });
             }
         }
     }

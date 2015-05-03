@@ -105,7 +105,7 @@
     <Compile Include="Bootstrapping\WebApi\WebApiServiceConfiguratorExtensions.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="DirectoryEx.cs" />
-    <Compile Include="IBulkIndexer.cs" />
+    <Compile Include="IMediaItemImporter.cs" />
     <Compile Include="MediaItemFactory.cs" />
     <Compile Include="FileSystemMonitor.cs" />
     <Compile Include="IMediaItemFactory.cs" />
@@ -120,8 +120,9 @@
     <Compile Include="Entities\MediaItem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Raven\MediaItemBulkIndexer.cs" />
-    <Compile Include="Raven\Configuration\DatabaseManager.cs" />
+    <Compile Include="Raven\DocumentStoreExtensions.cs" />
+    <Compile Include="Raven\MediaItemImporter.cs" />
+    <Compile Include="Raven\DatabaseManager.cs" />
     <Compile Include="Raven\Indexes\MediaItems_ByKeywords.cs" />
     <Compile Include="ServiceApi\MediaIndexerController.cs" />
     <Compile Include="Watchers\DirectoryWatcher.cs" />

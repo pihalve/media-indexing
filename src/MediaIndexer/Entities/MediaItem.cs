@@ -7,7 +7,7 @@ namespace Pihalve.MediaIndexer.Entities
     {
         private readonly IList<string> _keywords = new List<string>();
 
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         public string FilePath { get; set; }
         

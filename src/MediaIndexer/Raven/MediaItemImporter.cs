@@ -1,13 +1,12 @@
 ﻿using System;
 using System.IO;
 using log4net;
-using Pihalve.MediaIndexer.Raven.Configuration;
 using Raven.Client;
 using Raven.Client.Document;
 
 namespace Pihalve.MediaIndexer.Raven
 {
-    public class MediaItemBulkIndexer : IBulkIndexer
+    public class MediaItemImporter : IMediaItemImporter
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly IDocumentStore _store;
@@ -15,7 +14,7 @@ namespace Pihalve.MediaIndexer.Raven
         private readonly string _watchFolder;
         private readonly string[] _watchExtensions;
 
-        public MediaItemBulkIndexer(IDocumentStore store, IMediaItemFactory mediaItemFactory, string watchFolder, string watchFilter)
+        public MediaItemImporter(IDocumentStore store, IMediaItemFactory mediaItemFactory, string watchFolder, string watchFilter)
         {
             _store = store;
             _mediaItemFactory = mediaItemFactory;
@@ -24,9 +23,9 @@ namespace Pihalve.MediaIndexer.Raven
             _watchExtensions = watchFilter.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
         }
 
-        public void ReindexAll()
+        public void Import()
         {
-            DatabaseManager.ClearCollection(_store, "MediaItems");
+            _store.ClearCollection("MediaItems");
 
             using (BulkInsertOperation bulkInsert = _store.BulkInsert())
             {
@@ -39,7 +38,7 @@ namespace Pihalve.MediaIndexer.Raven
                         if (mediaItem != null)
                         {
                             bulkInsert.Store(mediaItem);
-
+                            
                             if (Log.IsDebugEnabled) Log.DebugFormat("File indexed: {0}", file);
                         }
                     }

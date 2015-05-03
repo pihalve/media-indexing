@@ -1,7 +1,8 @@
 ﻿using Autofac;
-using Pihalve.MediaIndexer.Raven.Configuration;
+using Pihalve.MediaIndexer.Raven;
 using Raven.Client;
 using Raven.Client.Embedded;
+using Raven.Client.Indexes;
 using Raven.Database.Server;
 
 namespace Pihalve.MediaIndexer.Bootstrapping.Modules
@@ -25,7 +26,8 @@ namespace Pihalve.MediaIndexer.Bootstrapping.Modules
             var store = (EmbeddableDocumentStore)rootContainer.Resolve<IDocumentStore>();
             DatabaseManager.InitializeDatabase(dataDirectory, databaseServerPort, store);
 
-            //IndexCreation.CreateIndexes(GetType().Assembly, store);
+            new RavenDocumentsByEntityName().Execute(store); // ensure this raven studio index is present
+            IndexCreation.CreateIndexes(GetType().Assembly, store);
         }
     }
 }

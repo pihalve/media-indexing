@@ -22,7 +22,7 @@ namespace Pihalve.MediaIndexer.Bootstrapping.Modules
             //        })
             //    .InstancePerLifetimeScope();
             builder.RegisterType<DummyFileSystemMonitor>().As<IFileSystemMonitor>().InstancePerLifetimeScope();
-            builder.RegisterType<MediaItemBulkIndexer>().As<IBulkIndexer>()
+            builder.RegisterType<MediaItemImporter>().As<IMediaItemImporter>()
                 .WithParameters(new[]
                     {
                         new NamedParameter("watchFolder", watchFolder), 
